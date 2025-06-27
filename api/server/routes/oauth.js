@@ -26,6 +26,9 @@ router.use(loginLimiter);
 const oauthHandler = async (req, res) => {
   try {
     await checkDomainAllowed(req, res);
+    if (!req.isDomainAllowed) {
+      return;
+    }
     await checkBan(req, res);
     if (req.banned) {
       return;
