@@ -14,7 +14,9 @@ const { logger } = require('~/config');
  */
 const checkDomainAllowed = async (req, res, next = () => {}) => {
   const email = req?.user?.email;
-  if (email && !(await isEmailDomainAllowed(email))) {
+  const isDomainAllowed = email && (await isEmailDomainAllowed(email));
+  req.isDomainAllowed = isDomainAllowed;
+  if (!isDomainAllowed) {
     logger.error(`[Social Login] [Social Login not allowed] [Email: ${email}]`);
     return res.redirect('/login');
   } else {
